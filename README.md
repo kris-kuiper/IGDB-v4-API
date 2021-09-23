@@ -1,6 +1,9 @@
 IGDB V4 PHP API
 ====================
 
+[![License](https://poser.pugx.org/kris-kuiper/igdbv4/license)](https://packagist.org/packages/kris-kuiper/igdbv4)
+[![Total Downloads](https://poser.pugx.org/kris-kuiper/igdbv4/downloads)](https://packagist.org/packages/kris-kuiper/igdbv4)
+
 ## Introduction
 This package is a PHP wrapper for the IGDB version 4 API for retrieving game information. It contains the following:
 - All the IGDB v4 [endpoints](https://api-docs.igdb.com/?shell#endpoints)
