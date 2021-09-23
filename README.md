@@ -124,14 +124,14 @@ $igdb->genre()->query('fields name, slug; limit 500; sort id;');
 The query builder lets you programmatically create queries which you can use for each endpoint calling the `query()` method.
 
 It contains the following methods:
-- fields
-- exclude
-- search
-- where
-- orWhere (only after a where)
-- sort
-- offset
-- limit
+- `fields()` (selecting specific fields)
+- `exclude()` (excluding specific fields)
+- `search()` 
+- `where()` (where, whereIn and grouping where's)
+- `orWhere()` (only after a where)
+- `sort()`
+- `offset()`
+- `limit()`
 
 #### Example using the query builder with the "games" endpoint
 ```php
