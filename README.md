@@ -17,7 +17,7 @@ Requires PHP 8.0 or later; Using the latest PHP version whenever possible is rec
 ### Installation
 Run the following to install this package:
 ```bash
-$ composer require kriskuiper/igdbv4
+$ composer require kris-kuiper/igdbv4
 ```
 
 ***
