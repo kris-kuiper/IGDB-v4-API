@@ -6,6 +6,7 @@ namespace Tests\Endpoints;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
 use KrisKuiper\IGDBV4\Authentication\ValueObjects\AccessConfig;
+use KrisKuiper\IGDBV4\Collections\Collection;
 use KrisKuiper\IGDBV4\Contracts\EndpointInterface;
 use KrisKuiper\IGDBV4\Endpoints\ {
     AgeRatingContentDescriptionEndpoint,
@@ -63,7 +64,7 @@ class EndpointTest extends TestCase
     /**
      * @dataProvider endpointProvider
      */
-    public function testShouldReturnCorrectValueWhenAskingEndpointName(string $fqn, $url): void
+    public function testShouldReturnCorrectEndpointURLWhenAskingEndpointName(string $fqn, $url): void
     {
         $endpoint = $this->getMockForFQNEndpoint($fqn);
         $this->assertEquals($url, $endpoint->getEndpoint());
@@ -72,23 +73,57 @@ class EndpointTest extends TestCase
     /**
      * @dataProvider endpointProvider
      */
-    public function testShouldReturnValidResponseWhenSearchById(string $fqn): void
+    public function testShouldReturnObjectWhenUsingFindById(string $fqn): void
     {
         $endpoint = $this->getMockForFQNEndpoint($fqn);
         $this->client->shouldReceive('request')->andReturn(new Response(200, [], '[{"id": 1}]'));
         $response = $endpoint->findById(1, ['id']);
-        $this->assertEquals([(object) ['id' => 1]], $response);
+        $this->assertEquals((object) ['id' => 1], $response);
     }
 
     /**
      * @dataProvider endpointProvider
      */
-    public function testShouldReturnValidResponseWhenListing(string $fqn): void
+    public function testShouldReturnNullWhenTryingToFindUnknownId(string $fqn): void
+    {
+        $endpoint = $this->getMockForFQNEndpoint($fqn);
+        $this->client->shouldReceive('request')->andReturn(new Response(200, [], '[]'));
+        $response = $endpoint->findById(10000000, ['id']);
+        $this->assertNull($response);
+    }
+
+    /**
+     * @dataProvider endpointProvider
+     */
+    public function testShouldReturnCollectionWhenListing(string $fqn): void
     {
         $endpoint = $this->getMockForFQNEndpoint($fqn);
         $this->client->shouldReceive('request')->andReturn(new Response(200, [], '[{"id": 1}, {"id": 2}]'));
         $response = $endpoint->list(0, 2, ['id']);
-        $this->assertEquals([(object) ['id' => 1], (object) ['id' => 2]], $response);
+        $this->assertEquals(new Collection([(object) ['id' => 1], (object) ['id' => 2]]), $response);
+    }
+
+    /**
+     * @dataProvider endpointProvider
+     */
+    public function testShouldReturnCollectionWhenUsingCustomQuery(string $fqn): void
+    {
+        $endpoint = $this->getMockForFQNEndpoint($fqn);
+        $this->client->shouldReceive('request')->andReturn(new Response(200, [], '[{"id": 1}]'));
+        $response = $endpoint->query('fields id; limit 1;');
+        $this->assertEquals(new Collection([(object) ['id' => 1]]), $response);
+    }
+
+
+    /**
+     * @dataProvider endpointProvider
+     */
+    public function testShouldReturnCollectionWithValidObjectsWhenUsingCustomQuery(string $fqn): void
+    {
+        $endpoint = $this->getMockForFQNEndpoint($fqn);
+        $this->client->shouldReceive('request')->andReturn(new Response(200, [], '[{"id":1,"platforms":[{"id":5}]}]'));
+        $response = $endpoint->query('fields id platforms.id; limit 1;');
+        $this->assertEquals(new Collection([(object) ['id' => 1, 'platforms' => [(object) ['id' => 5]]]]), $response);
     }
 
     /**

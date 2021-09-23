@@ -16,9 +16,11 @@ class Request
 {
     private const BASE_URL = 'https://api.igdb.com/v4/';
     private const HTTP_POST = 'post';
-    private Client $client;
+
     private string $endpoint;
+    private Client $client;
     private AccessConfigInterface $config;
+
     public function __construct(Client $client, AccessConfigInterface $config, string $endpoint)
     {
         $this->client = $client;
@@ -32,6 +34,7 @@ class Request
     public function post(string $body): array
     {
         $contents = $this->request(self::HTTP_POST, $body)->getBody()->getContents();
+
         try {
             return json_decode($contents, false, 512, JSON_THROW_ON_ERROR);
         } catch (JsonException) {
@@ -55,6 +58,7 @@ class Request
             ]);
         } catch (ClientExceptionInterface $exception) {
             throw match ($exception->getCode()) {
+                400 => RequestException::badSyntax($this->endpoint, $exception),
                 401 => AuthenticationException::authenticationFailed($exception),
                 404 => RequestException::endpointNotFound($this->endpoint),
                 default => RequestException::unknownError($this->endpoint, $exception),

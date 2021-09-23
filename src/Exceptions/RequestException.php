@@ -23,4 +23,9 @@ class RequestException extends Exception
     {
         return new self(sprintf('Unknown error for endpoint "%s"', $endpoint), $exception->getCode(), $exception);
     }
+
+    public static function badSyntax(string $endpoint, Exception|ClientExceptionInterface $exception): self
+    {
+        return new self(sprintf('Bad syntax for endpoint "%s"', $endpoint), $exception->getCode(), $exception);
+    }
 }
