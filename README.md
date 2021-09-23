@@ -224,7 +224,7 @@ $query = (new Query())
 Install phpunit in your environment and run:
 
 ```bash
-$ phpunit
+$ php /vendor/bin/phpunit
 ```
 
 ***
