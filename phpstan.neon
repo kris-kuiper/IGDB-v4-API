@@ -1,0 +1,6 @@
+includes:
+    - ./phpstan.base.neon
+
+parameters:
+    parallel:
+        maximumNumberOfProcesses: 8

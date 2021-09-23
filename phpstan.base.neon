@@ -1,0 +1,8 @@
+parameters:
+    paths:
+        - src
+    level: 5
+    ignoreErrors:
+        - '#Unsafe usage of new static#'
+    reportUnmatchedIgnoredErrors: false
+    checkMissingIterableValueType: false

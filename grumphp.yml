@@ -1,0 +1,19 @@
+grumphp:
+    process_timeout: 120
+    tasks:
+        paratest:
+            processes: ~
+        phpcs:
+            standard: [./phpcs.xml]
+            triggered_by: [php]
+        phpstan:
+            autoload_file: ~
+            configuration: phpstan.neon
+            level: 5
+            force_patterns: [ ]
+            ignore_patterns:
+                - .phpstorm.meta.php
+                - _ide_helper.php
+                - tests/
+            triggered_by: ['php']
+            memory_limit: "-1"
