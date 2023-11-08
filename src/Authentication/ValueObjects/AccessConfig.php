@@ -10,6 +10,7 @@ class AccessConfig implements AccessConfigInterface
 {
     private string $clientId;
     private string $accessToken;
+
     public function __construct(string $clientId, string $accessToken)
     {
         $this->clientId = $clientId;

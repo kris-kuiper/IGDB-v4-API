@@ -1,0 +1,20 @@
+version: '3.7'
+
+services:
+
+  igdbv4:
+    container_name: igdbv4
+    build: ./.build
+    restart: "no"
+    volumes:
+      - apache_webroot:/var/www
+    ports:
+      - "${APP_HTTP_PORT}:80"
+
+volumes:
+  apache_webroot:
+    driver: local
+    driver_opts:
+      type: none
+      device: "${APP_ROOT_DIRECTORY}"
+      o: bind

@@ -135,7 +135,7 @@ class EndpointTest extends TestCase
         return new $fqn($this->client, $config);
     }
 
-    public function endpointProvider(): array
+    public static function endpointProvider(): array
     {
         return [
             [AgeRatingContentDescriptionEndpoint::class, 'age_rating_content_descriptions'],

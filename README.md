@@ -69,21 +69,21 @@ Only the game, platform, collection, character and theme endpoints supports also
 
 Below is a list of the supported endpoints.
 
-|   |   |   |
-|---|---|---|
-| [Age rating content description](https://api-docs.igdb.com/?shell#age-rating-content-description)  | [Game](https://api-docs.igdb.com/?shell#game)  | [Platform family](https://api-docs.igdb.com/?shell#platform-family)  |
-| [Age rating](https://api-docs.igdb.com/?shell#age-rating)  | [Game engine](https://api-docs.igdb.com/?shell#game-engine)  | [Platform logo](https://api-docs.igdb.com/?shell#platform-logo)  |
-| [Alternative name](https://api-docs.igdb.com/?shell#alternative-name)  | [Game engine logo](https://api-docs.igdb.com/?shell#game-engine-logo)  | [Platform version company](https://api-docs.igdb.com/?shell#platform-version-company)  |
-| [Artwork](https://api-docs.igdb.com/?shell#artwork)  | [Game mode](https://api-docs.igdb.com/?shell#game-mode)  | [Platform version](https://api-docs.igdb.com/?shell#platform-version)  |
-| [Character](https://api-docs.igdb.com/?shell#character)  | [Game version](https://api-docs.igdb.com/?shell#game-version)  | [Platform version release date](https://api-docs.igdb.com/?shell#platform-version-release-date)  |
-| [Character mug shot](https://api-docs.igdb.com/?shell#character-mug-shot)  | [Game version feature](https://api-docs.igdb.com/?shell#game-version-feature)  | [Platform website](https://api-docs.igdb.com/?shell#platform-website)  |
-| [Collection](https://api-docs.igdb.com/?shell#collection)  | [Game version feature value](https://api-docs.igdb.com/?shell#game-version-feature-value)  | [Player perspective](https://api-docs.igdb.com/?shell#player-perspective)  |
-| [Company](https://api-docs.igdb.com/?shell#company)  | [Game video](https://api-docs.igdb.com/?shell#game-video)  | [Screenshot](https://api-docs.igdb.com/?shell#screenshot)  |
-| [Company logo](https://api-docs.igdb.com/?shell#company-logo)  | [Genre](https://api-docs.igdb.com/?shell#genre)  | [Search](https://api-docs.igdb.com/?shell#search)  |
-| [Company website](https://api-docs.igdb.com/?shell#company-website)  | [Involved company](https://api-docs.igdb.com/?shell#involved-company)  | [Theme](https://api-docs.igdb.com/?shell#theme)  |
-| [Cover](https://api-docs.igdb.com/?shell#cover)  | [Keyword](https://api-docs.igdb.com/?shell#keyword)  | [Website](https://api-docs.igdb.com/?shell#website)  |
-| [External game](https://api-docs.igdb.com/?shell#external-game)  | [Multiplayer mode](https://api-docs.igdb.com/?shell#multiplayer-mode)  | 
-| [Franchise](https://api-docs.igdb.com/?shell#franchise)  | [Platform](https://api-docs.igdb.com/?shell#platform)  |   
+|                                                                                                   |                                                                                           |                                                                                                 |
+|---------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------|
+| [Age rating content description](https://api-docs.igdb.com/?shell#age-rating-content-description) | [Game](https://api-docs.igdb.com/?shell#game)                                             | [Platform family](https://api-docs.igdb.com/?shell#platform-family)                             |
+| [Age rating](https://api-docs.igdb.com/?shell#age-rating)                                         | [Game engine](https://api-docs.igdb.com/?shell#game-engine)                               | [Platform logo](https://api-docs.igdb.com/?shell#platform-logo)                                 |
+| [Alternative name](https://api-docs.igdb.com/?shell#alternative-name)                             | [Game engine logo](https://api-docs.igdb.com/?shell#game-engine-logo)                     | [Platform version company](https://api-docs.igdb.com/?shell#platform-version-company)           |
+| [Artwork](https://api-docs.igdb.com/?shell#artwork)                                               | [Game mode](https://api-docs.igdb.com/?shell#game-mode)                                   | [Platform version](https://api-docs.igdb.com/?shell#platform-version)                           |
+| [Character](https://api-docs.igdb.com/?shell#character)                                           | [Game version](https://api-docs.igdb.com/?shell#game-version)                             | [Platform version release date](https://api-docs.igdb.com/?shell#platform-version-release-date) |
+| [Character mug shot](https://api-docs.igdb.com/?shell#character-mug-shot)                         | [Game version feature](https://api-docs.igdb.com/?shell#game-version-feature)             | [Platform website](https://api-docs.igdb.com/?shell#platform-website)                           |
+| [Collection](https://api-docs.igdb.com/?shell#collection)                                         | [Game version feature value](https://api-docs.igdb.com/?shell#game-version-feature-value) | [Player perspective](https://api-docs.igdb.com/?shell#player-perspective)                       |
+| [Company](https://api-docs.igdb.com/?shell#company)                                               | [Game video](https://api-docs.igdb.com/?shell#game-video)                                 | [Screenshot](https://api-docs.igdb.com/?shell#screenshot)                                       |
+| [Company logo](https://api-docs.igdb.com/?shell#company-logo)                                     | [Genre](https://api-docs.igdb.com/?shell#genre)                                           | [Search](https://api-docs.igdb.com/?shell#search)                                               |
+| [Company website](https://api-docs.igdb.com/?shell#company-website)                               | [Involved company](https://api-docs.igdb.com/?shell#involved-company)                     | [Theme](https://api-docs.igdb.com/?shell#theme)                                                 |
+| [Cover](https://api-docs.igdb.com/?shell#cover)                                                   | [Keyword](https://api-docs.igdb.com/?shell#keyword)                                       | [Website](https://api-docs.igdb.com/?shell#website)                                             |
+| [External game](https://api-docs.igdb.com/?shell#external-game)                                   | [Multiplayer mode](https://api-docs.igdb.com/?shell#multiplayer-mode)                     | 
+| [Franchise](https://api-docs.igdb.com/?shell#franchise)                                           | [Platform](https://api-docs.igdb.com/?shell#platform)                                     |   
 
 #### Example fetching game(s), platform(s) and genre(s):
 ```php
