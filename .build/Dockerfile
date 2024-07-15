@@ -2,6 +2,9 @@ FROM php:8.2.7-apache-buster
 
 RUN apt-get update && apt-get install -y \
     libfreetype6-dev \
+    libjpeg62-turbo-dev \
+    libpng-dev \
+    libjpeg-dev \
     libmcrypt-dev \
     libicu-dev \
     libxml2-dev \
