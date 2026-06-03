@@ -5,6 +5,13 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.1] - 2026-06-04
+
+### Changed
+- Bumped `webmozart/assert` to `^2.0` (was `^1.11`). The 2.x API is compatible
+  (`Assert::keyExists()` unchanged) and requires PHP 8.2+, which fits the
+  `>=8.4` requirement.
+
 ## [2.0.0] - 2026-06-04
 
 ### Added
@@ -35,4 +42,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Slimmed the Docker image down to `php:8.5-cli-bookworm` and cleaned up
   `docker-compose.yml` (this is a library, not a web application).
 
+[2.0.1]: https://github.com/kris-kuiper/IGDB-v4-API/releases/tag/v2.0.1
 [2.0.0]: https://github.com/kris-kuiper/IGDB-v4-API/releases/tag/v2.0.0
