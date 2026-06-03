@@ -28,7 +28,7 @@ abstract class AbstractEndpoint implements EndpointInterface
     /**
      * @throws RequestException|AuthenticationException
      */
-    public function findById(int $id, array $fields = null): ?object
+    public function findById(int $id, ?array $fields = null): ?object
     {
         $query = (new Query())->fields(...($fields ?? ['*']))->where('id', $id)->build();
         $response = $this->request()->post($query);
@@ -43,7 +43,7 @@ abstract class AbstractEndpoint implements EndpointInterface
     /**
      * @throws RequestException|AuthenticationException
      */
-    public function list(int $offset = 0, int $limit = 500, array $fields = null): Iterator
+    public function list(int $offset = 0, int $limit = 500, ?array $fields = null): Iterator
     {
         $query = (new Query())->fields(...($fields ?? ['*']))->offset($offset)->limit($limit)->build();
         return new Collection($this->request()->post($query));

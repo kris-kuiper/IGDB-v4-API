@@ -12,7 +12,7 @@ use Closure;
 
 trait OrWhereTrait
 {
-    public function orWhere(string|Closure $field, array|string|int|float $value = null, string $operator = '='): self
+    public function orWhere(string|Closure $field, array|string|int|float|null $value = null, string $operator = '='): self
     {
         if ($field instanceof Closure) {
             $nodeCollection = new NodeCollection();

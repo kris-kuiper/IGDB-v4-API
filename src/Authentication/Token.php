@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace KrisKuiper\IGDBV4\Authentication;
 
-use Assert\Assertion;
-use Assert\AssertionFailedException;
+use InvalidArgumentException;
+use Webmozart\Assert\Assert;
 
 class Token
 {
@@ -21,13 +21,13 @@ class Token
     }
 
     /**
-     * @throws AssertionFailedException
+     * @throws InvalidArgumentException
      */
     public static function fromArray(array $data): self
     {
-        Assertion::keyExists($data, 'access_token');
-        Assertion::keyExists($data, 'expires_in');
-        Assertion::keyExists($data, 'token_type');
+        Assert::keyExists($data, 'access_token');
+        Assert::keyExists($data, 'expires_in');
+        Assert::keyExists($data, 'token_type');
         return new self($data['access_token'], $data['expires_in'], $data['token_type']);
     }
 

@@ -1,18 +1,16 @@
-version: '3.7'
-
 services:
 
   igdbv4:
     container_name: igdbv4
     build: ./.build
     restart: "no"
+    # Keep the CLI container alive so `docker compose exec` works (tests, PHPStan, PHPCS, git hooks).
+    command: tail -f /dev/null
     volumes:
-      - apache_webroot:/var/www
-    ports:
-      - "${APP_HTTP_PORT}:80"
+      - webroot:/var/www
 
 volumes:
-  apache_webroot:
+  webroot:
     driver: local
     driver_opts:
       type: none

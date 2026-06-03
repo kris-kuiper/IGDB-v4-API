@@ -49,6 +49,7 @@ use KrisKuiper\IGDBV4\Endpoints\ {
     WebsiteEndpoint
 };
 use Mockery;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class EndpointTest extends TestCase
@@ -61,18 +62,14 @@ class EndpointTest extends TestCase
         parent::setup();
     }
 
-    /**
-     * @dataProvider endpointProvider
-     */
-    public function testShouldReturnCorrectEndpointURLWhenAskingEndpointName(string $fqn, $url): void
+    #[DataProvider('endpointUrlProvider')]
+    public function testShouldReturnCorrectEndpointURLWhenAskingEndpointName(string $fqn, string $url): void
     {
         $endpoint = $this->getMockForFQNEndpoint($fqn);
         $this->assertEquals($url, $endpoint->getEndpoint());
     }
 
-    /**
-     * @dataProvider endpointProvider
-     */
+    #[DataProvider('endpointProvider')]
     public function testShouldReturnObjectWhenUsingFindById(string $fqn): void
     {
         $endpoint = $this->getMockForFQNEndpoint($fqn);
@@ -81,9 +78,7 @@ class EndpointTest extends TestCase
         $this->assertEquals((object) ['id' => 1], $response);
     }
 
-    /**
-     * @dataProvider endpointProvider
-     */
+    #[DataProvider('endpointProvider')]
     public function testShouldReturnNullWhenTryingToFindUnknownId(string $fqn): void
     {
         $endpoint = $this->getMockForFQNEndpoint($fqn);
@@ -92,9 +87,7 @@ class EndpointTest extends TestCase
         $this->assertNull($response);
     }
 
-    /**
-     * @dataProvider endpointProvider
-     */
+    #[DataProvider('endpointProvider')]
     public function testShouldReturnCollectionWhenListing(string $fqn): void
     {
         $endpoint = $this->getMockForFQNEndpoint($fqn);
@@ -103,9 +96,7 @@ class EndpointTest extends TestCase
         $this->assertEquals(new Collection([(object) ['id' => 1], (object) ['id' => 2]]), $response);
     }
 
-    /**
-     * @dataProvider endpointProvider
-     */
+    #[DataProvider('endpointProvider')]
     public function testShouldReturnCollectionWhenUsingCustomQuery(string $fqn): void
     {
         $endpoint = $this->getMockForFQNEndpoint($fqn);
@@ -115,9 +106,7 @@ class EndpointTest extends TestCase
     }
 
 
-    /**
-     * @dataProvider endpointProvider
-     */
+    #[DataProvider('endpointProvider')]
     public function testShouldReturnCollectionWithValidObjectsWhenUsingCustomQuery(string $fqn): void
     {
         $endpoint = $this->getMockForFQNEndpoint($fqn);
@@ -136,6 +125,11 @@ class EndpointTest extends TestCase
     }
 
     public static function endpointProvider(): array
+    {
+        return array_map(static fn (array $row): array => [$row[0]], self::endpointUrlProvider());
+    }
+
+    public static function endpointUrlProvider(): array
     {
         return [
             [AgeRatingContentDescriptionEndpoint::class, 'age_rating_content_descriptions'],

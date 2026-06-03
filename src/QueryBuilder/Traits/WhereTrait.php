@@ -13,7 +13,7 @@ use Closure;
 
 trait WhereTrait
 {
-    public function where(string|Closure $field, array|string|int|float $value = null, string $operator = '='): WhereQuery
+    public function where(string|Closure $field, array|string|int|float|null $value = null, string $operator = '='): WhereQuery
     {
         if ($field instanceof Closure) {
             $nodeCollection = new NodeCollection();

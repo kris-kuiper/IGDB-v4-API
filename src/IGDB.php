@@ -48,6 +48,8 @@ use KrisKuiper\IGDBV4\Endpoints\ {
 use KrisKuiper\IGDBV4\Contracts\AccessConfigInterface;
 use KrisKuiper\IGDBV4\Contracts\EndpointInterface;
 use KrisKuiper\IGDBV4\Contracts\EndpointSearchInterface;
+use KrisKuiper\IGDBV4\Contracts\WebhookServiceInterface;
+use KrisKuiper\IGDBV4\Webhooks\WebhookService;
 
 class IGDB
 {
@@ -248,5 +250,10 @@ class IGDB
     public function screenshot(): EndpointInterface
     {
         return new ScreenshotEndpoint($this->client, $this->config);
+    }
+
+    public function webhooks(): WebhookServiceInterface
+    {
+        return new WebhookService($this->client, $this->config);
     }
 }

@@ -3,8 +3,8 @@ grumphp:
     git_hook_variables:
         EXEC_GRUMPHP_COMMAND: 'docker compose -f ./docker-compose.yml exec -T igdbv4'
     tasks:
-        paratest:
-            processes: ~
+        phpunit:
+            config_file: ./phpunit.xml
         phpcs:
             standard: [./phpcs.xml]
             triggered_by: [php]

@@ -14,7 +14,7 @@ abstract class AbstractSearchEndpoint extends AbstractEndpoint implements Endpoi
     /**
      * @throws RequestException|AuthenticationException
      */
-    public function search(string $name, array $fields = null): array
+    public function search(string $name, ?array $fields = null): array
     {
         $query = (new Query())->fields(...($fields ?? ['*']))->search($name)->build();
         return $this->request()->post($query);

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace KrisKuiper\IGDBV4\Authentication;
 
-use Assert\AssertionFailedException;
 use GuzzleHttp\Client;
+use InvalidArgumentException;
 use JsonException;
 use KrisKuiper\IGDBV4\Exceptions\AuthenticationException;
 use KrisKuiper\IGDBV4\Contracts\AuthConfigInterface;
@@ -47,7 +47,7 @@ class Authentication
 
         try {
             $token = Token::fromArray($tokenData);
-        } catch (AssertionFailedException $exception) {
+        } catch (InvalidArgumentException $exception) {
             throw AuthenticationException::authenticationFailed($exception);
         }
 

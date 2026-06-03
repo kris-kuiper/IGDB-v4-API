@@ -9,11 +9,12 @@ This package is a PHP wrapper for the IGDB version 4 API for retrieving game inf
 - All the IGDB v4 [endpoints](https://api-docs.igdb.com/?shell#endpoints)
 - Authentication package for retrieving the access token
 - Advanced query builder
+- [Webhook](https://api-docs.igdb.com/?shell#webhooks) management and incoming notification handling
 
 ***
 
 ### System Requirements
-Requires PHP 8.0 or later; Using the latest PHP version whenever possible is recommended.
+Requires PHP 8.4 or later; Using the latest PHP version whenever possible is recommended.
 
 ***
 
@@ -219,6 +220,76 @@ $query = (new Query())
     })
     ->where('id', 375)
     ->build();
+```
+
+***
+
+### Webhooks
+Instead of polling the API for changes, IGDB can push data to you whenever an entity is added, updated or deleted. This package supports both **managing** your webhooks and **handling** the incoming notifications.
+
+Full information can be found in the IGDB [webhook documentation](https://api-docs.igdb.com/?shell#webhooks).
+
+#### Managing webhooks
+Webhooks are registered per endpoint and per method (`create`, `update` or `delete`). The `secret` is a value of your choice that IGDB will send back in the `X-Secret` header of every notification, so you can verify the request really came from IGDB.
+
+```php
+use GuzzleHttp\Client;
+use KrisKuiper\IGDBV4\IGDB;
+use KrisKuiper\IGDBV4\Authentication\ValueObjects\AccessConfig;
+use KrisKuiper\IGDBV4\Enums\WebhookMethod;
+
+$client = new Client();
+$config = new AccessConfig('your client id', 'your access token');
+$igdb = new IGDB($client, $config);
+
+//Register a webhook that fires when a new game is created
+$webhook = $igdb->webhooks()->register('games', 'https://example.com/igdb/webhook', WebhookMethod::CREATE, 'your-secret');
+$webhook->getId();      //The unique webhook id
+$webhook->isActive();   //Whether the webhook is currently active
+
+//Retrieve all registered webhooks (returns a typed WebhookCollection)
+foreach ($igdb->webhooks()->all() as $webhook) {
+    $webhook->getUrl();
+}
+
+//Retrieve a single webhook by its id (returns null when it does not exist)
+$igdb->webhooks()->find($webhook->getId());
+
+//Send a test notification: delivers the game with id 1337 to your registered "games" create webhook
+$igdb->webhooks()->test('games', $webhook->getId(), 1337);
+
+//Remove a webhook (returns the deleted webhook id)
+$igdb->webhooks()->delete($webhook->getId());
+```
+
+*Tip: A webhook is set to inactive after 5 failed deliveries. Re-register it on service start to make sure it is always active.*
+
+#### Handling incoming notifications
+When IGDB delivers a notification, validate and parse it with the `WebhookReceiver`. It is framework-agnostic and accepts any PSR-7 `ServerRequestInterface`. It verifies the `X-Secret` and `User-Agent` headers for you and throws a `WebhookException` when the request can not be trusted.
+
+```php
+use KrisKuiper\IGDBV4\Webhooks\WebhookReceiver;
+use KrisKuiper\IGDBV4\Exceptions\WebhookException;
+use KrisKuiper\IGDBV4\Enums\WebhookMethod;
+
+//$request is a PSR-7 ServerRequestInterface provided by your framework
+$receiver = new WebhookReceiver('your-secret');
+
+try {
+    $payload = $receiver->receive($request);
+} catch (WebhookException $exception) {
+    //Invalid secret, wrong user agent or an unparsable body: reject the request
+    http_response_code(403);
+    return;
+}
+
+$payload->getEndpoint();    //e.g. "games"
+$payload->getOperation();   //WebhookMethod::CREATE, ::UPDATE or ::DELETE
+$payload->getId();          //The id of the affected entity
+$payload->getData();        //The unexpanded entity (only the id is present for delete notifications)
+
+//Always answer within 15 seconds with a 200 OK so IGDB keeps the webhook active
+http_response_code(200);
 ```
 
 ***
