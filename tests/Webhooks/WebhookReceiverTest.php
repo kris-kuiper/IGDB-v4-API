@@ -38,6 +38,44 @@ class WebhookReceiverTest extends TestCase
         $this->assertSame(1337, $payload->getId());
     }
 
+    // Real deliveries send "Games"/"UPDATE" casing; the payload normalizes to the registered lowercase slug.
+    public function testShouldNormalizeEndpointAndOperationCasing(): void
+    {
+        $request = $this->request(self::SECRET, 'Games', 'UPDATE', '{"id":1337}');
+
+        $payload = $this->receiver()->receive($request);
+
+        $this->assertSame('games', $payload->getEndpoint());
+        $this->assertSame(WebhookMethod::UPDATE, $payload->getOperation());
+    }
+
+    // Test deliveries (Java user agent, no X-Endpoint/X-Operation) only verify the secret.
+    public function testShouldAcceptTestDeliveryWithValidSecret(): void
+    {
+        $request = new ServerRequest('POST', 'https://example.com/hook', [
+            'User-Agent' => 'Java/17.0.2',
+            'X-Secret' => self::SECRET,
+        ], '{"id":1337,"name":"Half-Life"}');
+
+        $data = $this->receiver()->receiveTest($request);
+
+        $this->assertSame(1337, $data->id);
+        $this->assertSame('Half-Life', $data->name);
+    }
+
+    // A test delivery with a wrong secret is still rejected.
+    public function testShouldRejectTestDeliveryWithInvalidSecret(): void
+    {
+        $this->expectException(WebhookException::class);
+
+        $request = new ServerRequest('POST', 'https://example.com/hook', [
+            'User-Agent' => 'Java/17.0.2',
+            'X-Secret' => 'wrong-secret',
+        ], '{"id":1337}');
+
+        $this->receiver()->receiveTest($request);
+    }
+
     // A mismatching X-Secret header is rejected to prevent spoofed requests.
     public function testShouldRejectNotificationWithInvalidSecret(): void
     {

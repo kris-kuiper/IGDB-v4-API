@@ -51,6 +51,20 @@ class WebhookServiceTest extends TestCase
         $this->assertTrue($webhook->isActive());
     }
 
+    // Regression: IGDB wraps the created webhook in a one-element list, like the list response.
+    public function testShouldRegisterWebhookWhenResponseIsWrappedInList(): void
+    {
+        $this->client
+            ->shouldReceive('request')
+            ->once()
+            ->andReturn(new Response(200, [], '[' . self::WEBHOOK_JSON . ']'));
+
+        $webhook = $this->service()->register('games', 'https://example.com/hook', WebhookMethod::UPDATE, 's3cr3t');
+
+        $this->assertInstanceOf(Webhook::class, $webhook);
+        $this->assertSame(123, $webhook->getId());
+    }
+
     // GET webhooks/ returns a JSON array that maps to a typed WebhookCollection.
     public function testShouldReturnCollectionOfWebhooksWhenListingAll(): void
     {

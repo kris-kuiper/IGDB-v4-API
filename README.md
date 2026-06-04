@@ -292,6 +292,17 @@ $payload->getData();        //The unexpanded entity (only the id is present for 
 http_response_code(200);
 ```
 
+*Note: incoming `X-Endpoint` values are normalized to their lowercase slug (IGDB delivers `Games` while webhooks are registered as `games`), and the `X-Operation` value is matched case-insensitively.*
+
+#### Handling test deliveries
+Deliveries triggered through the test API (`$igdb->webhooks()->test(...)`) differ from real deliveries: IGDB sends them with a generic `Java/<version>` user agent and **without** the `X-Endpoint` and `X-Operation` headers (the `X-Secret` header is present). They would therefore always be rejected by `receive()`. Use `receiveTest()` instead, which only verifies the secret and returns the raw entity:
+
+```php
+$receiver = new WebhookReceiver('your-secret');
+$data = $receiver->receiveTest($request); //Verifies X-Secret, returns the entity object
+$data->id;
+```
+
 ***
 
 ### Run Unit Test

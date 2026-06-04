@@ -14,11 +14,12 @@ enum WebhookMethod: string
 
     /**
      * Resolves the method from an incoming webhook X-Operation header value.
+     * Matches case-insensitively because IGDB is not consistent in header value casing.
      *
      * @throws WebhookException
      */
     public static function fromOperation(string $operation): self
     {
-        return self::tryFrom($operation) ?? throw WebhookException::unknownOperation($operation);
+        return self::tryFrom(strtolower($operation)) ?? throw WebhookException::unknownOperation($operation);
     }
 }

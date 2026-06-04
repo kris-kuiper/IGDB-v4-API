@@ -24,7 +24,14 @@ class WebhookRequest extends AbstractRequest
             ],
         ]);
 
-        return (object) $this->decode($response);
+        $decoded = $this->decode($response);
+        $webhook = $this->normalizeSingle($decoded);
+
+        if (null === $webhook) {
+            throw RequestException::unknownResponseFormat((string) json_encode($decoded));
+        }
+
+        return $webhook;
     }
 
     /**
@@ -46,13 +53,7 @@ class WebhookRequest extends AbstractRequest
      */
     public function find(int $id): ?object
     {
-        $decoded = $this->decode($this->send(self::HTTP_GET, 'webhooks/' . $id));
-
-        if (true === is_array($decoded)) {
-            return $decoded[0] ?? null;
-        }
-
-        return $decoded;
+        return $this->normalizeSingle($this->decode($this->send(self::HTTP_GET, 'webhooks/' . $id)));
     }
 
     /**
@@ -81,5 +82,20 @@ class WebhookRequest extends AbstractRequest
         $this->send(self::HTTP_POST, $endpoint . '/webhooks/test/' . $webhookId, [
             'query' => ['entityId' => $entityId],
         ]);
+    }
+
+    /**
+     * Normalizes a decoded response to a single webhook object; IGDB wraps some
+     * single-object responses (e.g. register) in a one-element list, like the list response.
+     */
+    private function normalizeSingle(array|object $decoded): ?object
+    {
+        if (false === is_array($decoded)) {
+            return $decoded;
+        }
+
+        $first = $decoded[0] ?? null;
+
+        return true === is_object($first) ? $first : null;
     }
 }

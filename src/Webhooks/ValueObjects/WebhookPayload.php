@@ -16,10 +16,14 @@ final class WebhookPayload
     {
     }
 
+    /**
+     * Normalizes the endpoint to its lowercase slug; IGDB deliveries send
+     * "Games" in X-Endpoint while webhooks are registered with the slug "games".
+     */
     public static function create(string $endpoint, WebhookMethod $operation, object $data): self
     {
         $instance = new self();
-        $instance->endpoint = $endpoint;
+        $instance->endpoint = strtolower($endpoint);
         $instance->operation = $operation;
         $instance->data = $data;
 

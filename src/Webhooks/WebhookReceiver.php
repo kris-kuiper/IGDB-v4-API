@@ -46,6 +46,19 @@ class WebhookReceiver implements WebhookReceiverInterface
     }
 
     /**
+     * Skips the user agent and endpoint/operation header guards because IGDB
+     * test deliveries do not send them; the secret is still verified.
+     *
+     * @throws WebhookException
+     */
+    public function receiveTest(ServerRequestInterface $request): object
+    {
+        $this->guardSecret($request);
+
+        return $this->decode($request);
+    }
+
+    /**
      * @throws WebhookException
      */
     private function guardUserAgent(ServerRequestInterface $request): void
