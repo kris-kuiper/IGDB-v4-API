@@ -40,6 +40,7 @@ use KrisKuiper\IGDBV4\Endpoints\ {
     PlatformWebsiteEndpoint,
     PlayerPerspectiveEndpoint,
     ReleaseDateEndpoint,
+    ReleaseDateRegionEndpoint,
     ScreenshotEndpoint,
     SearchEndpoint,
     ThemeEndpoint,
@@ -225,6 +226,11 @@ class IGDB
     public function releaseDate(): EndpointInterface
     {
         return new ReleaseDateEndpoint($this->client, $this->config);
+    }
+
+    public function releaseDateRegion(): EndpointInterface
+    {
+        return new ReleaseDateRegionEndpoint($this->client, $this->config);
     }
 
     public function platformLogo(): EndpointInterface
