@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace KrisKuiper\IGDBV4\Webhooks;
 
-use GuzzleHttp\Client;
+use GuzzleHttp\ClientInterface;
 use KrisKuiper\IGDBV4\Collections\WebhookCollection;
 use KrisKuiper\IGDBV4\Contracts\AccessConfigInterface;
 use KrisKuiper\IGDBV4\Contracts\WebhookServiceInterface;
@@ -18,7 +18,7 @@ class WebhookService implements WebhookServiceInterface
 {
     private WebhookRequest $request;
 
-    public function __construct(Client $client, AccessConfigInterface $config)
+    public function __construct(ClientInterface $client, AccessConfigInterface $config)
     {
         $this->request = new WebhookRequest($client, $config);
     }

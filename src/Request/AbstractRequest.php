@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace KrisKuiper\IGDBV4\Request;
 
-use GuzzleHttp\Client;
+use GuzzleHttp\ClientInterface;
 use JsonException;
 use KrisKuiper\IGDBV4\Contracts\AccessConfigInterface;
 use KrisKuiper\IGDBV4\Exceptions\AuthenticationException;
@@ -19,10 +19,10 @@ abstract class AbstractRequest
     protected const HTTP_POST = 'POST';
     protected const HTTP_DELETE = 'DELETE';
 
-    private Client $client;
+    private ClientInterface $client;
     private AccessConfigInterface $config;
 
-    public function __construct(Client $client, AccessConfigInterface $config)
+    public function __construct(ClientInterface $client, AccessConfigInterface $config)
     {
         $this->client = $client;
         $this->config = $config;

@@ -15,6 +15,7 @@ This package is a PHP wrapper for the IGDB version 4 API for retrieving game inf
 
 ### System Requirements
 Requires PHP 8.4 or later; Using the latest PHP version whenever possible is recommended.
+The HTTP client is Guzzle: both `^7.15.2` and `^8.0` are supported. Anywhere this readme constructs a `GuzzleHttp\Client`, any `GuzzleHttp\ClientInterface` implementation will do.
 
 ***
 
@@ -65,26 +66,43 @@ Every endpoint listed can be request by calling the endpoints name and has the f
 - `findById()` - Find an item by its identifier (i.e. find a game by id)
 - `list()` - Returns a list of items (i.e. list all screenshots of a specific game)
 - `query()` - Execute a raw query on the current endpoint (i.e. execute a custom query to find a specific genre)
+- `count()` - Returns how many items match a query, without fetching them (i.e. count all games with a rating above 75)
 
 Only the game, platform, collection, character and theme endpoints supports also the `search()` method.
 
 Below is a list of the supported endpoints.
 
-|                                                                                                   |                                                                                           |                                                                                                 |
-|---------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------|
-| [Age rating content description](https://api-docs.igdb.com/?shell#age-rating-content-description) | [Game](https://api-docs.igdb.com/?shell#game)                                             | [Platform family](https://api-docs.igdb.com/?shell#platform-family)                             |
-| [Age rating](https://api-docs.igdb.com/?shell#age-rating)                                         | [Game engine](https://api-docs.igdb.com/?shell#game-engine)                               | [Platform logo](https://api-docs.igdb.com/?shell#platform-logo)                                 |
-| [Alternative name](https://api-docs.igdb.com/?shell#alternative-name)                             | [Game engine logo](https://api-docs.igdb.com/?shell#game-engine-logo)                     | [Platform version company](https://api-docs.igdb.com/?shell#platform-version-company)           |
-| [Artwork](https://api-docs.igdb.com/?shell#artwork)                                               | [Game mode](https://api-docs.igdb.com/?shell#game-mode)                                   | [Platform version](https://api-docs.igdb.com/?shell#platform-version)                           |
-| [Character](https://api-docs.igdb.com/?shell#character)                                           | [Game version](https://api-docs.igdb.com/?shell#game-version)                             | [Platform version release date](https://api-docs.igdb.com/?shell#platform-version-release-date) |
-| [Character mug shot](https://api-docs.igdb.com/?shell#character-mug-shot)                         | [Game version feature](https://api-docs.igdb.com/?shell#game-version-feature)             | [Platform website](https://api-docs.igdb.com/?shell#platform-website)                           |
-| [Collection](https://api-docs.igdb.com/?shell#collection)                                         | [Game version feature value](https://api-docs.igdb.com/?shell#game-version-feature-value) | [Player perspective](https://api-docs.igdb.com/?shell#player-perspective)                       |
-| [Company](https://api-docs.igdb.com/?shell#company)                                               | [Game video](https://api-docs.igdb.com/?shell#game-video)                                 | [Screenshot](https://api-docs.igdb.com/?shell#screenshot)                                       |
-| [Company logo](https://api-docs.igdb.com/?shell#company-logo)                                     | [Genre](https://api-docs.igdb.com/?shell#genre)                                           | [Search](https://api-docs.igdb.com/?shell#search)                                               |
-| [Company website](https://api-docs.igdb.com/?shell#company-website)                               | [Involved company](https://api-docs.igdb.com/?shell#involved-company)                     | [Theme](https://api-docs.igdb.com/?shell#theme)                                                 |
-| [Cover](https://api-docs.igdb.com/?shell#cover)                                                   | [Keyword](https://api-docs.igdb.com/?shell#keyword)                                       | [Website](https://api-docs.igdb.com/?shell#website)                                             |
-| [External game](https://api-docs.igdb.com/?shell#external-game)                                   | [Multiplayer mode](https://api-docs.igdb.com/?shell#multiplayer-mode)                     | 
-| [Franchise](https://api-docs.igdb.com/?shell#franchise)                                           | [Platform](https://api-docs.igdb.com/?shell#platform)                                     |   
+|                                                                                                             |                                                                                           |                                                                                                 |
+|-------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------|
+| [Age rating](https://api-docs.igdb.com/?shell#age-rating)                                                   | [Date format](https://api-docs.igdb.com/?shell#date-format)                               | [Language support type](https://api-docs.igdb.com/?shell#language-support-type)                 |
+| [Age rating category](https://api-docs.igdb.com/?shell#age-rating-category)                                 | [Entity type](https://api-docs.igdb.com/?shell#entity-type)                               | [Multiplayer mode](https://api-docs.igdb.com/?shell#multiplayer-mode)                           |
+| [Age rating content description](https://api-docs.igdb.com/?shell#age-rating-content-description)           | [Event](https://api-docs.igdb.com/?shell#event)                                           | [Network type](https://api-docs.igdb.com/?shell#network-type)                                   |
+| [Age rating content description type](https://api-docs.igdb.com/?shell#age-rating-content-description-type) | [Event logo](https://api-docs.igdb.com/?shell#event-logo)                                 | [Platform](https://api-docs.igdb.com/?shell#platform)                                           |
+| [Age rating content description v2](https://api-docs.igdb.com/?shell#age-rating-content-description-v2)     | [Event network](https://api-docs.igdb.com/?shell#event-network)                           | [Platform family](https://api-docs.igdb.com/?shell#platform-family)                             |
+| [Age rating organization](https://api-docs.igdb.com/?shell#age-rating-organization)                         | [External game](https://api-docs.igdb.com/?shell#external-game)                           | [Platform logo](https://api-docs.igdb.com/?shell#platform-logo)                                 |
+| [Alternative name](https://api-docs.igdb.com/?shell#alternative-name)                                       | [External game source](https://api-docs.igdb.com/?shell#external-game-source)             | [Platform type](https://api-docs.igdb.com/?shell#platform-type)                                 |
+| [Artwork](https://api-docs.igdb.com/?shell#artwork)                                                         | [Franchise](https://api-docs.igdb.com/?shell#franchise)                                   | [Platform version](https://api-docs.igdb.com/?shell#platform-version)                           |
+| [Artwork type](https://api-docs.igdb.com/?shell#artwork-type)                                               | [Game](https://api-docs.igdb.com/?shell#game)                                             | [Platform version company](https://api-docs.igdb.com/?shell#platform-version-company)           |
+| [Character](https://api-docs.igdb.com/?shell#character)                                                     | [Game engine](https://api-docs.igdb.com/?shell#game-engine)                               | [Platform version release date](https://api-docs.igdb.com/?shell#platform-version-release-date) |
+| [Character gender](https://api-docs.igdb.com/?shell#character-gender)                                       | [Game engine logo](https://api-docs.igdb.com/?shell#game-engine-logo)                     | [Platform website](https://api-docs.igdb.com/?shell#platform-website)                           |
+| [Character mug shot](https://api-docs.igdb.com/?shell#character-mug-shot)                                   | [Game localization](https://api-docs.igdb.com/?shell#game-localization)                   | [Player perspective](https://api-docs.igdb.com/?shell#player-perspective)                       |
+| [Character species](https://api-docs.igdb.com/?shell#character-specie)                                      | [Game mode](https://api-docs.igdb.com/?shell#game-mode)                                   | [Popularity primitive](https://api-docs.igdb.com/?shell#popularity-primitive)                   |
+| [Collection](https://api-docs.igdb.com/?shell#collection)                                                   | [Game release format](https://api-docs.igdb.com/?shell#game-release-format)               | [Popularity type](https://api-docs.igdb.com/?shell#popularity-type)                             |
+| [Collection membership](https://api-docs.igdb.com/?shell#collection-membership)                             | [Game status](https://api-docs.igdb.com/?shell#game-status)                               | [Region](https://api-docs.igdb.com/?shell#region)                                               |
+| [Collection membership type](https://api-docs.igdb.com/?shell#collection-membership-type)                   | [Game time to beat](https://api-docs.igdb.com/?shell#game-time-to-beat)                   | [Release date](https://api-docs.igdb.com/?shell#release-date)                                   |
+| [Collection relation](https://api-docs.igdb.com/?shell#collection-relation)                                 | [Game type](https://api-docs.igdb.com/?shell#game-type)                                   | [Release date region](https://api-docs.igdb.com/?shell#release-date-region)                     |
+| [Collection relation type](https://api-docs.igdb.com/?shell#collection-relation-type)                       | [Game version](https://api-docs.igdb.com/?shell#game-version)                             | [Release date status](https://api-docs.igdb.com/?shell#release-date-status)                     |
+| [Collection type](https://api-docs.igdb.com/?shell#collection-type)                                         | [Game version feature](https://api-docs.igdb.com/?shell#game-version-feature)             | [Report](https://api-docs.igdb.com/?shell#report)                                               |
+| [Company](https://api-docs.igdb.com/?shell#company)                                                         | [Game version feature value](https://api-docs.igdb.com/?shell#game-version-feature-value) | [Report type](https://api-docs.igdb.com/?shell#report-type)                                     |
+| [Company logo](https://api-docs.igdb.com/?shell#company-logo)                                               | [Game video](https://api-docs.igdb.com/?shell#game-video)                                 | [Screenshot](https://api-docs.igdb.com/?shell#screenshot)                                       |
+| [Company size](https://api-docs.igdb.com/?shell#company-size)                                               | [Genre](https://api-docs.igdb.com/?shell#genre)                                           | [Search](https://api-docs.igdb.com/?shell#search)                                               |
+| [Company status](https://api-docs.igdb.com/?shell#company-status)                                           | [Image type](https://api-docs.igdb.com/?shell#image-type)                                 | [Theme](https://api-docs.igdb.com/?shell#theme)                                                 |
+| [Company type](https://api-docs.igdb.com/?shell#company-type)                                               | [Involved company](https://api-docs.igdb.com/?shell#involved-company)                     | [Website](https://api-docs.igdb.com/?shell#website)                                             |
+| [Company type history](https://api-docs.igdb.com/?shell#company-type-history)                               | [Keyword](https://api-docs.igdb.com/?shell#keyword)                                       | [Website type](https://api-docs.igdb.com/?shell#website-type)                                   |
+| [Company website](https://api-docs.igdb.com/?shell#company-website)                                         | [Language](https://api-docs.igdb.com/?shell#language)                                     |                                                                                                 |
+| [Cover](https://api-docs.igdb.com/?shell#cover)                                                             | [Language support](https://api-docs.igdb.com/?shell#language-support)                     |                                                                                                 |
+
+Two of these are deprecated by IGDB and kept only so existing code keeps working: `ageRatingContentDescription()` (use `ageRatingContentDescriptionV2()` instead) and `artworkType()` (use `imageType()` instead).
 
 #### Example fetching game(s), platform(s) and genre(s):
 ```php
@@ -104,6 +122,8 @@ $igdb->game()->search('Metal Gear Solid', ['name', 'storyline', 'platforms.*']);
 $igdb->game()->list(); //List all games (limit will be 500 as default)
 $igdb->game()->list(50, 20); //Setting an offset and limit (for pagination purposes)
 $igdb->game()->query('fields name, storyline, platforms.*; where platforms = (7,9); sort id asc; limit 50'); //Using a custom query (see the Advanced Query builder section for creating queries programmatically)
+$igdb->game()->count(); //Count all games
+$igdb->game()->count('where rating > 75;'); //Count all games matching a filter
 
 //Platforms
 $igdb->platform()->findById(5, ['name', 'slug']);
@@ -118,6 +138,31 @@ $igdb->genre()->query('fields name, slug; limit 500; sort id;');
 ```
 
 *Note: All the listed endpoints are available through the `IGDB` class.*
+
+***
+
+### Counting
+Every endpoint has a counting variant that reports how many items match a filter, so there is no need to page through a list to find out. Call `count()` with an [apicalypse](https://api-docs.igdb.com/#apicalypse-1) query, or without one to count everything on the endpoint.
+
+```php
+$igdb->game()->count(); //Count all games
+$igdb->game()->count('where rating > 75;'); //Count all games with a rating above 75
+$igdb->platform()->count('where platform_type = 1;'); //Count all platforms of a given type
+```
+
+Only the filters are meaningful while counting: selecting fields, sorting and paginating have nothing to act on. A query built for a list call can be passed in unchanged, but a filter is all that is needed:
+
+```php
+use KrisKuiper\IGDBV4\QueryBuilder\Query;
+
+//where platforms = (7, 9) & genres != 45;
+$query = (new Query())
+    ->where('platforms', [7, 9])
+    ->where('genres', 45, '!=')
+    ->build();
+
+$igdb->game()->count($query);
+```
 
 ***
 
@@ -145,11 +190,11 @@ $client = new Client();
 $config = new AccessConfig('your client id', 'your access token');
 $igdb = new IGDB($client, $config);
 
-//fields name, storyline, platforms.*; where platforms = (7, 9) & genre != 45; sort id asc; limit 20;
+//fields name, storyline, platforms.*; where platforms = (7, 9) & genres != 45; sort id asc; limit 20;
 $query = (new Query())
     ->fields('name', 'storyline', 'platforms.*')
     ->where('platforms', [7, 9])
-    ->where('genre', 45, '!=')
+    ->where('genres', 45, '!=')
     ->sort('id')
     ->limit(20)
     ->build();
@@ -174,10 +219,10 @@ $query = (new Query())
     ->limit(50)
     ->build();
 
-//fields *; exclude genre, platforms, keywords; sort name desc; limit 50;
+//fields *; exclude genres, platforms, keywords; sort name desc; limit 50;
 $query = (new Query())
     ->fields('*')
-    ->exclude('genre', 'platform', 'keywords')
+    ->exclude('genres', 'platforms', 'keywords')
     ->limit(50)
     ->sort('name', 'desc')
     ->build();
@@ -187,10 +232,10 @@ $query = (new Query())
 ```php
 use KrisKuiper\IGDBV4\QueryBuilder\Query;
 
-//fields name; where genre = 25 & platforms = 5;
+//fields name; where genres = 25 & platforms = 5;
 $query = (new Query())
     ->fields('name')
-    ->where('genre', 25)
+    ->where('genres', 25)
     ->where('platforms', 5)
     ->build();
 
@@ -201,17 +246,17 @@ $query = (new Query())
     ->where('platforms', 10, '<=')
     ->build();
     
-//fields name; where genre = 25 | platforms = (5, 7, 9);
+//fields name; where genres = 25 | platforms = (5, 7, 9);
 $query = (new Query())
     ->fields('name')
-    ->where('genre', 25)
+    ->where('genres', 25)
     ->orWhere('platforms', [5, 7, 9])
     ->build();
 
-//fields name; where genre = 25 | (platforms = 5 | platforms = 9 | platforms = 12) & id = 375;
+//fields name; where genres = 25 | (platforms = 5 | platforms = 9 | platforms = 12) & id = 375;
 $query = (new Query())
     ->fields('name')
-    ->where('genre', 25)
+    ->where('genres', 25)
     ->orWhere(function($query) {
         $query
             ->where('platforms', 5)

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace KrisKuiper\IGDBV4\Authentication;
 
-use GuzzleHttp\Client;
+use GuzzleHttp\ClientInterface;
 use InvalidArgumentException;
 use JsonException;
 use KrisKuiper\IGDBV4\Exceptions\AuthenticationException;
@@ -14,9 +14,9 @@ use Psr\Http\Client\ClientExceptionInterface;
 class Authentication
 {
     private AuthConfigInterface $config;
-    private Client $client;
+    private ClientInterface $client;
 
-    public function __construct(Client $client, AuthConfigInterface $config)
+    public function __construct(ClientInterface $client, AuthConfigInterface $config)
     {
         $this->client = $client;
         $this->config = $config;

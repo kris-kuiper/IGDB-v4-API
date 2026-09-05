@@ -4,47 +4,87 @@ declare(strict_types=1);
 
 namespace KrisKuiper\IGDBV4;
 
-use GuzzleHttp\Client;
+use GuzzleHttp\ClientInterface;
 use KrisKuiper\IGDBV4\Endpoints\ {
+    AgeRatingCategoryEndpoint,
     AgeRatingContentDescriptionEndpoint,
+    AgeRatingContentDescriptionTypeEndpoint,
+    AgeRatingContentDescriptionV2Endpoint,
     AgeRatingEndpoint,
+    AgeRatingOrganizationEndpoint,
     AlternativeNameEndpoint,
     ArtworkEndpoint,
+    ArtworkTypeEndpoint,
     CharacterEndpoint,
+    CharacterGenderEndpoint,
     CharacterMugShotEndpoint,
+    CharacterSpeciesEndpoint,
     CollectionEndpoint,
+    CollectionMembershipEndpoint,
+    CollectionMembershipTypeEndpoint,
+    CollectionRelationEndpoint,
+    CollectionRelationTypeEndpoint,
+    CollectionTypeEndpoint,
     CompanyEndpoint,
     CompanyLogoEndpoint,
+    CompanySizeEndpoint,
+    CompanyStatusEndpoint,
+    CompanyTypeEndpoint,
+    CompanyTypeHistoryEndpoint,
     CompanyWebsiteEndpoint,
     CoverEndpoint,
+    DateFormatEndpoint,
+    EntityTypeEndpoint,
+    EventEndpoint,
+    EventLogoEndpoint,
+    EventNetworkEndpoint,
     ExternalGameEndpoint,
+    ExternalGameSourceEndpoint,
     FranchiseEndpoint,
     GameEndpoint,
     GameEngineEndpoint,
     GameEngineLogoEndpoint,
+    GameLocalizationEndpoint,
     GameModeEndpoint,
+    GameReleaseFormatEndpoint,
+    GameStatusEndpoint,
+    GameTimeToBeatEndpoint,
+    GameTypeEndpoint,
     GameVersionEndpoint,
     GameVersionFeatureEndpoint,
     GameVersionFeatureValueEndpoint,
     GameVideoEndpoint,
     GenreEndpoint,
+    ImageTypeEndpoint,
     InvolvedCompanyEndpoint,
     KeywordEndpoint,
+    LanguageEndpoint,
+    LanguageSupportEndpoint,
+    LanguageSupportTypeEndpoint,
     MultiplayerModeEndpoint,
+    NetworkTypeEndpoint,
     PlatformEndpoint,
     PlatformFamilyEndpoint,
     PlatformLogoEndpoint,
+    PlatformTypeEndpoint,
     PlatformVersionCompanyEndpoint,
     PlatformVersionEndpoint,
     PlatformVersionReleaseDateEndpoint,
     PlatformWebsiteEndpoint,
     PlayerPerspectiveEndpoint,
+    PopularityPrimitiveEndpoint,
+    PopularityTypeEndpoint,
+    RegionEndpoint,
     ReleaseDateEndpoint,
     ReleaseDateRegionEndpoint,
+    ReleaseDateStatusEndpoint,
+    ReportEndpoint,
+    ReportTypeEndpoint,
     ScreenshotEndpoint,
     SearchEndpoint,
     ThemeEndpoint,
-    WebsiteEndpoint
+    WebsiteEndpoint,
+    WebsiteTypeEndpoint
 };
 use KrisKuiper\IGDBV4\Contracts\AccessConfigInterface;
 use KrisKuiper\IGDBV4\Contracts\EndpointInterface;
@@ -54,10 +94,10 @@ use KrisKuiper\IGDBV4\Webhooks\WebhookService;
 
 class IGDB
 {
-    private Client $client;
+    private ClientInterface $client;
     private AccessConfigInterface $config;
 
-    public function __construct(Client $client, AccessConfigInterface $config)
+    public function __construct(ClientInterface $client, AccessConfigInterface $config)
     {
         $this->client = $client;
         $this->config = $config;
@@ -73,6 +113,9 @@ class IGDB
         return new ArtworkEndpoint($this->client, $this->config);
     }
 
+    /**
+     * @deprecated IGDB deprecated this endpoint in favour of ageRatingContentDescriptionV2().
+     */
     public function ageRatingContentDescription(): EndpointInterface
     {
         return new AgeRatingContentDescriptionEndpoint($this->client, $this->config);
@@ -256,6 +299,209 @@ class IGDB
     public function screenshot(): EndpointInterface
     {
         return new ScreenshotEndpoint($this->client, $this->config);
+    }
+
+    public function ageRatingCategory(): EndpointInterface
+    {
+        return new AgeRatingCategoryEndpoint($this->client, $this->config);
+    }
+
+    public function ageRatingContentDescriptionType(): EndpointInterface
+    {
+        return new AgeRatingContentDescriptionTypeEndpoint($this->client, $this->config);
+    }
+
+    public function ageRatingContentDescriptionV2(): EndpointInterface
+    {
+        return new AgeRatingContentDescriptionV2Endpoint($this->client, $this->config);
+    }
+
+    public function ageRatingOrganization(): EndpointInterface
+    {
+        return new AgeRatingOrganizationEndpoint($this->client, $this->config);
+    }
+
+    /**
+     * @deprecated IGDB deprecated this endpoint in favour of the image type endpoint.
+     */
+    public function artworkType(): EndpointInterface
+    {
+        return new ArtworkTypeEndpoint($this->client, $this->config);
+    }
+
+    public function characterGender(): EndpointInterface
+    {
+        return new CharacterGenderEndpoint($this->client, $this->config);
+    }
+
+    public function characterSpecies(): EndpointInterface
+    {
+        return new CharacterSpeciesEndpoint($this->client, $this->config);
+    }
+
+    public function collectionMembershipType(): EndpointInterface
+    {
+        return new CollectionMembershipTypeEndpoint($this->client, $this->config);
+    }
+
+    public function collectionMembership(): EndpointInterface
+    {
+        return new CollectionMembershipEndpoint($this->client, $this->config);
+    }
+
+    public function collectionRelationType(): EndpointInterface
+    {
+        return new CollectionRelationTypeEndpoint($this->client, $this->config);
+    }
+
+    public function collectionRelation(): EndpointInterface
+    {
+        return new CollectionRelationEndpoint($this->client, $this->config);
+    }
+
+    public function collectionType(): EndpointInterface
+    {
+        return new CollectionTypeEndpoint($this->client, $this->config);
+    }
+
+    public function companySize(): EndpointInterface
+    {
+        return new CompanySizeEndpoint($this->client, $this->config);
+    }
+
+    public function companyStatus(): EndpointInterface
+    {
+        return new CompanyStatusEndpoint($this->client, $this->config);
+    }
+
+    public function companyTypeHistory(): EndpointInterface
+    {
+        return new CompanyTypeHistoryEndpoint($this->client, $this->config);
+    }
+
+    public function companyType(): EndpointInterface
+    {
+        return new CompanyTypeEndpoint($this->client, $this->config);
+    }
+
+    public function dateFormat(): EndpointInterface
+    {
+        return new DateFormatEndpoint($this->client, $this->config);
+    }
+
+    public function entityType(): EndpointInterface
+    {
+        return new EntityTypeEndpoint($this->client, $this->config);
+    }
+
+    public function eventLogo(): EndpointInterface
+    {
+        return new EventLogoEndpoint($this->client, $this->config);
+    }
+
+    public function eventNetwork(): EndpointInterface
+    {
+        return new EventNetworkEndpoint($this->client, $this->config);
+    }
+
+    public function event(): EndpointInterface
+    {
+        return new EventEndpoint($this->client, $this->config);
+    }
+
+    public function externalGameSource(): EndpointInterface
+    {
+        return new ExternalGameSourceEndpoint($this->client, $this->config);
+    }
+
+    public function gameLocalization(): EndpointInterface
+    {
+        return new GameLocalizationEndpoint($this->client, $this->config);
+    }
+
+    public function gameReleaseFormat(): EndpointInterface
+    {
+        return new GameReleaseFormatEndpoint($this->client, $this->config);
+    }
+
+    public function gameStatus(): EndpointInterface
+    {
+        return new GameStatusEndpoint($this->client, $this->config);
+    }
+
+    public function gameTimeToBeat(): EndpointInterface
+    {
+        return new GameTimeToBeatEndpoint($this->client, $this->config);
+    }
+
+    public function gameType(): EndpointInterface
+    {
+        return new GameTypeEndpoint($this->client, $this->config);
+    }
+
+    public function imageType(): EndpointInterface
+    {
+        return new ImageTypeEndpoint($this->client, $this->config);
+    }
+
+    public function languageSupportType(): EndpointInterface
+    {
+        return new LanguageSupportTypeEndpoint($this->client, $this->config);
+    }
+
+    public function languageSupport(): EndpointInterface
+    {
+        return new LanguageSupportEndpoint($this->client, $this->config);
+    }
+
+    public function language(): EndpointInterface
+    {
+        return new LanguageEndpoint($this->client, $this->config);
+    }
+
+    public function networkType(): EndpointInterface
+    {
+        return new NetworkTypeEndpoint($this->client, $this->config);
+    }
+
+    public function platformType(): EndpointInterface
+    {
+        return new PlatformTypeEndpoint($this->client, $this->config);
+    }
+
+    public function popularityPrimitive(): EndpointInterface
+    {
+        return new PopularityPrimitiveEndpoint($this->client, $this->config);
+    }
+
+    public function popularityType(): EndpointInterface
+    {
+        return new PopularityTypeEndpoint($this->client, $this->config);
+    }
+
+    public function region(): EndpointInterface
+    {
+        return new RegionEndpoint($this->client, $this->config);
+    }
+
+    public function releaseDateStatus(): EndpointInterface
+    {
+        return new ReleaseDateStatusEndpoint($this->client, $this->config);
+    }
+
+    public function reportType(): EndpointInterface
+    {
+        return new ReportTypeEndpoint($this->client, $this->config);
+    }
+
+    public function report(): EndpointInterface
+    {
+        return new ReportEndpoint($this->client, $this->config);
+    }
+
+    public function websiteType(): EndpointInterface
+    {
+        return new WebsiteTypeEndpoint($this->client, $this->config);
     }
 
     public function webhooks(): WebhookServiceInterface

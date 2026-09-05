@@ -15,4 +15,6 @@ interface EndpointInterface
     public function list(int $offset = 0, int $limit = 500, ?array $fields = null): Iterator;
 
     public function query(string $query): Iterator;
+
+    public function count(?string $query = null): int;
 }

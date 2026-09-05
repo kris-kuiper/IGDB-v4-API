@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace KrisKuiper\IGDBV4\Endpoints;
 
-use GuzzleHttp\Client;
+use GuzzleHttp\ClientInterface;
 use Iterator;
 use KrisKuiper\IGDBV4\Collections\Collection;
 use KrisKuiper\IGDBV4\Contracts\AccessConfigInterface;
@@ -16,10 +16,10 @@ use KrisKuiper\IGDBV4\Request\Request;
 
 abstract class AbstractEndpoint implements EndpointInterface
 {
-    private Client $client;
+    private ClientInterface $client;
     private AccessConfigInterface $config;
 
-    public function __construct(Client $client, AccessConfigInterface $config)
+    public function __construct(ClientInterface $client, AccessConfigInterface $config)
     {
         $this->client = $client;
         $this->config = $config;
@@ -57,8 +57,21 @@ abstract class AbstractEndpoint implements EndpointInterface
         return new Collection($this->request()->post($query));
     }
 
-    protected function request(): Request
+    /**
+     * Returns the amount of records matching the given query, without fetching them.
+     *
+     * @throws RequestException|AuthenticationException
+     */
+    public function count(?string $query = null): int
     {
-        return new Request($this->client, $this->config, $this->getEndpoint());
+        return $this->request($this->getEndpoint() . '/count')->count($query ?? '');
+    }
+
+    /**
+     * Targets the endpoint itself, or one of the paths underneath it when a path is given.
+     */
+    protected function request(?string $path = null): Request
+    {
+        return new Request($this->client, $this->config, $path ?? $this->getEndpoint());
     }
 }
